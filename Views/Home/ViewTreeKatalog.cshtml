@@ -1,0 +1,130 @@
+﻿
+<!DOCTYPE html>
+
+@model iPDP.Models.Uniwersalny
+
+<head>
+    <meta charset="UTF-8">
+    <style>
+                /*html {
+                    margin: 0;
+                    padding: 0;
+                    font-size: 62.5%;
+                }
+
+                body {
+                    max-width: 800px;
+                    min-width: 300px;
+                    margin: 0 auto;
+                    padding: 20px 10px;
+                    font-size: 14px;
+                    font-size: 1.4em;
+                }
+        */
+                h1 {
+                    font-size: 1.8em;
+                }
+
+                .oknoDrzewo {
+                    overflow: auto;
+                    border: 1px solid silver;
+                    float: left;
+                    min-height: 100px;
+                    height: 400px;
+                }
+    </style>
+    <link rel="stylesheet" href="./../../dist/themes/default/style.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- <script src="./../../dist/jstree.min.js"></script> -->
+    <script src="~/dist/jstree.min.js"></script>
+</head>
+
+@using (Html.BeginForm("ViewTreeKatalog", "", FormMethod.Post))
+{
+    <h4 style="text-align:center;">0. Katalog pomp</h4>
+
+    <div class="oknoDrzewo" style="width: 30%">
+        <div>Pompy</div>
+        <div id="drzewo"></div>  <!-- TU JEST WSTAWIANE DRZEWO -->
+    </div>
+    <div class="oknoDrzewo" style="width: 70%; " ondblclick="daj_Karte()">
+        <!--<div id="wyniki" style="border: 3px solid rgb(23,162,184); width: 70%;" >-->
+        <input id="sciezka" type="text" name="sciezka2" value="" readonly style="text-align:center;" />
+        <input type="submit" value="Lista pomp" />
+
+        <div class="panel-body text-center">
+            <table id="TabWyniki" class="table table-sm table-striped table-bordered" cellpadding="0">
+                <thead>
+                    <tr>
+                        <th>Lp.</th>
+                        <th>Nazwa</th>
+                        <th>Katra</th>
+                        <th>Qn [m<sup>3</sup>/h]</th>
+                        <th>Hn [m]</th>
+                        <th>Pn [kW]</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @{int i = 0; }
+                    @for (int j = 0; j < @Model.LiczbaPomp; j++)
+                    {
+                        <tr>
+                            @{i++;}
+                            <td> @i </td>
+
+                            <td> @Model.doborNaPunkt.listaPompZBazy.fLista[j].Nazwa </td>
+                            <td> <a href=@Url.Action("ViewKartaKatalogowa", "", new { tNr = j }) class="btn btn-primary btn-light" style="padding-top: 0.1rem; padding-bottom: 0.1rem;"> Karta &raquo;</a> </td>
+
+                            <td> @Model.doborNaPunkt.listaPompZBazy.fLista[j].Qn </td>
+                            <td> @Model.doborNaPunkt.listaPompZBazy.fLista[j].Hn </td>
+                            <td> @Model.doborNaPunkt.listaPompZBazy.fLista[j].Pn </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        
+    </div>
+    <a href="http://ipumps.eu/dobor-pomp-do-ukladu/" class="btn btn-primary btn-light"> Instrukcja &raquo;</a>
+    <!--</div>-->
+    <br />
+
+
+    <!-- tu using-->
+    <input id="ID1" hidden="hidden" name="ID1" value="xxx" />
+    <input id="ID2" hidden="hidden" name="ID2" value="xxx" />
+    <input id="XXX" hidden="hidden" name="sciezka" value="XX" />
+
+
+
+}
+
+<script>
+        //Wyswietlanie drzewa
+        $('#drzewo').jstree({
+            'core': {'data': @Html.Raw(ViewBag.Json)}
+        });
+
+        $('#drzewo').on("changed.jstree", function (e, data)
+        {
+            var path = data.instance.get_path(data.node, '/');
+            document.getElementById("XXX").setAttribute('value', path);
+            document.getElementById("sciezka").setAttribute('value', path);
+
+            if (data.selected.length) {
+                var ID1 = data.instance.get_node(data.node.parent).text;
+                var ID2 = data.instance.get_node(data.selected[0]).text;
+
+                document.getElementById("ID1").setAttribute('value', data.instance.get_node(data.node.parent).text);
+                document.getElementById("ID2").setAttribute('value', data.instance.get_node(data.selected[0]).text);
+                //document.getElementById("sciezka").innerHTML = data.instance.get_node(data.node.parent).text + ' / ' + data.instance.get_node(data.selected[0]).text;
+
+                //document.getElementById("XXX").setAttribute('value', data.selected[0].text);
+                //function submitform() { ViewTreeKatalog.submit(); }
+
+                //submitform();
+           }
+        });
+</script>

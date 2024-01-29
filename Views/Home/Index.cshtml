@@ -1,0 +1,62 @@
+﻿@*
+    @{
+        ViewData["Title"] = "Home Page";
+    }
+
+    <div class="text-center">
+        <h1 class="display-4">Welcome</h1>
+        <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    </div>
+*@
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+@{
+    ViewBag.Title = "Home Page";
+
+}
+<!--
+<head>
+    <link rel="stylesheet" href="/css/site.css" type="text/css" />
+</head>
+-->
+<style>
+    .kafelek {
+        width: 29%;
+        border-radius: 5%;
+        border: solid 3px #000080;
+        margin: 2%;
+    }
+</style>
+
+
+<div style=" border: solid 1px rgb(180, 180, 180);">
+    <a href=@Url.Action("ViewTreeKatalog")>
+        <img class="kafelek" src="~/Images/Drzewo_02.JPG" />
+    </a>
+    <a href=@Url.Action("ViewDobor")>
+        <img class="kafelek" src="~/Images/Dobor_02.JPG" />
+    </a>
+
+    <a href=@Url.Action("ViewProsty")>
+        <img class="kafelek" src="~/Images/Prosty_ICO_02.JPG " />
+    </a>
+    @*
+
+
+        <a href=@Url.Action("ViewUniwersalny")>
+            <img class="kafelek" src="~/Images/Uniwersalny_ICO_01.JPG"/>
+        </a>
+
+        <a href=@Url.Action("ViewPrzepompownia")>
+            <img class="kafelek" src="~/Images/Przepompownia_ICO_01.JPG"/>
+        </a>
+    *@
+</div>
+
+<br>
+<a href="http://ipumps.eu/dobor-pomp-do-ukladu/" class="btn btn-primary btn-light"> Instrukcja &raquo;</a>
+<a href="http://ipumps.eu" class="btn btn-primary btn-light"> Więcej o pompach i układach &raquo;</a>
+

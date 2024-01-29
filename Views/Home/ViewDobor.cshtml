@@ -1,0 +1,138 @@
+﻿@model iPDP.Models.Uniwersalny
+
+@{
+    ViewData["Title"] = "ViewDobor";
+}
+
+<head>
+    <meta charset="utf-8" />
+
+    <script type="text/javascript">
+        function ustawStrone() {
+
+            var Zast_Tmp = document.getElementById("Kl_Zastosowania").value;
+            document.getElementById(Zast_Tmp).checked = true;
+
+            var Interfejs_QwUnit_Tmp = document.getElementById("Interfejs_QwUnit").value;
+            document.getElementById(Interfejs_QwUnit_Tmp).checked = true;
+        }
+
+        function aktualizuj() {
+            document.getElementById("Hw_model").value = document.getElementById("Dis_Hw").value;
+        }
+    </script>
+    <style>
+        input[type="number"] {
+            width: 100px;
+            background-color: lightgreen;
+            font-size: 20px;
+            font-weight: 600;
+            text-align: right;
+            border-color: #000080;
+        }
+
+        input[type="text"] {
+            background-color: rgb(240,240,240);
+            text-align: right;
+        }
+
+        .ramka {
+            border: 3px solid #000080;
+        }
+    </style>
+</head>
+
+<h4 style="text-align:center;">1. Dobór pomp</h4>
+
+
+<!--<div style="border: 3px solid rgb(23,162,184);" onload="ustawStrone();">-->
+
+<div class="ramka">
+    <!--<div class="row" style="border: 3px solid rgb(23,162,184);">   row odsuwa ramke wyrzucilem   -->
+    <fieldset style="margin-left: 10px;">
+        <legend> Zastosowanie </legend>
+
+        <div><input type="radio" id="ogol" name="zastosowanie" value="ogol" onclick="daj_Zast()" checked />  Wszystkie pompy (253)</div>
+        <div><input type="radio" id="scie" name="zastosowanie" value="scie" onclick="daj_Zast()" /> Ścieki (133)</div>
+        <div><input type="radio" id="przem" name="zastosowanie" value="przem" onclick="daj_Zast()" /> Przemysłowe (87) </div>
+        <div><input type="radio" id="sam" name="zastosowanie" value="sam" onclick="daj_Zast()" /> Samozasysające (7)  </div>
+
+        <br>
+
+    </fieldset>
+</div>
+
+<br>
+<div class="ramka">
+    <p style="        margin-left: 2%; margin-top: 1%;">
+        <input id="Dis_Qw" type="number" step="0.1" onchange="daj_Qw()" size="6" value=@Model.Interfejs_Qw /> Qw - wymagana wydajność
+    </p>
+    <p style=" margin-left: 2%;">
+
+        <input id="m3h" type="radio" name="Unit" value="m3h" onclick="zmien_QwUnit()" checked /> [m3/h]
+        <input id="L_s" type="radio" name="Unit" value="L_s" onclick="zmien_QwUnit()" /> [L/s]
+        <input id="L_m" type="radio" name="Unit" value="L_m" onclick="zmien_QwUnit()" /> [L/min]
+    </p>
+    <p style=" margin-left: 2%;">
+        <input id="Dis_Hw" type="number" step="0.1" onchange="aktualizuj()" size="6" value=@Model.Interfejs_Hw /> Hw - wymagana wysokość podnoszenia [m]
+    </p>
+
+</div>
+<br>
+@using (Html.BeginForm("ViewDobor", "", FormMethod.Post))
+{
+    <div hidden="hidden">
+        <!-- Sekcja przekazywana do modelu-->
+        <input id="Interfejs_Qw" type="number" name="Interfejs_Qw" step="0.0001" value=@Model.Interfejs_Qw /> Qw <br>
+        <input id="Interfejs_QwUnit" type="text" name="Interfejs_QwUnit" value=@Model.Interfejs_QwUnit /><br>
+
+        <input id="Qw_model" type="number" name="Qw_Model" step="0.0001" value=@Model.Qw_model /> Ow <br>
+        <input id="Hw_model" type="number" name="Hw_model" step="0.0001" value=@Model.Hw_model /> Hw <br>
+        <input id="Kl_Zastosowania" type="text" name="Kl_Zastosowania" value=@Model.Kl_Zastosowania />
+    </div>
+    <div style="display:flex; justify-content:center"><input class="btn btn-primary" type="submit" value=">>________Szukaj pompy________<<" /></div>
+}
+<br>
+<script type="text/javascript">
+        ustawStrone();
+</script>
+<div id="wyniki" class="ramka" ondblclick="daj_Karte()">
+    <div class="panel-body text-center">
+        <h4>Lista znalezionych pomp</h4>
+        <table id="TabWyniki" class="table table-sm table-striped table-bordered" cellpadding="0">
+            <thead>
+                <tr>
+                    <th>Lp.</th>
+                    <th>Nazwa</th>
+                    <th>Katalog</th>
+                    <th>Qn [m<sup>3</sup>/h]</th>
+                    <th>Hn [m]</th>
+                    <th>Pn [kW]</th>
+                    <th>Zasilanie</th>
+                    <!--<th>Dobroć [-]</th>-->
+                </tr>
+            </thead>
+            <tbody>
+                @{int i = 0; }
+                @for (int j = 0; j < @Model.LiczbaPomp; j++)
+                {
+                    <tr>
+                        @{i++;}
+                        <td> @i </td>
+                        <td> @Model.doborNaPunkt.listaPompZBazy.fLista[j].Nazwa </td>
+
+                        <td> <a href=@Url.Action("ViewKartaKatalogowa", "", new { tNr = j}) class="btn btn-primary btn-lg"> Karta &raquo;</a> </td>
+
+                        <td> @Model.doborNaPunkt.listaPompZBazy.fLista[j].Qn </td>
+                        <td> @Model.doborNaPunkt.listaPompZBazy.fLista[j].Hn </td>
+                        <td> @Model.doborNaPunkt.listaPompZBazy.fLista[j].Pn </td>
+                        <td> @Model.doborNaPunkt.listaPompZBazy.fLista[j].M_Zas </td>
+                        <!--<td> @Model.doborNaPunkt.listaPompZBazy.fLista[j].Dobroc </td>-->
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    
+</div>
+<a href="http://ipumps.eu/dobor-pomp-do-ukladu/" class="btn btn-primary btn-light"> Instrukcja &raquo;</a>

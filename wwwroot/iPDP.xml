@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<IPDP_CONFIG>
+	<!--<PRODUCER>BIALOGON</PRODUCER>-->
+	<PRODUCER>MEPROZET</PRODUCER>
+	<!--<PRODUCER>LFP</PRODUCER>-->
+	<!--<PRODUCER>METALCHEM</PRODUCER>-->
+	<!--<PRODUCER>DAMBAT</PRODUCER>-->
+	<MEPROZET>
+		<Nazwa>Brzeska Fabryka Pomp i Armatury MEPROZET Sp. z o.o.</Nazwa>
+		<Nazwa_Skr>Meprozet</Nazwa_Skr>
+		<Adres>ul. Armii Krajowej 40, 49-304 BRZEG</Adres>
+		<Logo>LogoMep.01.JPG</Logo>
+		<WWW>https://meprozet.com.pl</WWW>
+		<Mail>meprozet@meprozet.com.pl</Mail>
+		<Tel>(+48) 77 400 40 00</Tel>
+	</MEPROZET>
+	<BIALOGON>
+		<Nazwa>Kielecka Fabryka Pomp BIAŁOGON</Nazwa>
+		<Nazwa_Skr>Białogon</Nazwa_Skr>
+		<Strona>https://www.kfp-bialogon.com.pl</Strona>
+		<Mail></Mail>
+	</BIALOGON>
+	<LFP>
+		<Nazwa>Leszczyńska Fabryka Pomp</Nazwa>
+	</LFP>
+	<Software>
+		<Nazwa>SKOWROŃSKI Marek Skowroński</Nazwa>
+		<Nazwa_Skr><em>SKOWROŃSKI</em></Nazwa_Skr>
+		<Adres>ul. Mikołowska 51, 51-515 Wrocław</Adres>
+		<Logo></Logo>
+		<WWW>skowronski.com.pl</WWW>
+		<Mail>biuro@skowronski.com.pl</Mail>
+		<Tel>(+48) 71 34 66 354</Tel>
+		<Kom>(+48) 509 198 196</Kom>
+	</Software>
+</IPDP_CONFIG>

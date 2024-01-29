@@ -1,0 +1,26 @@
+﻿<h3>O programie</h3><br>
+
+@model iPDP.Models.Uniwersalny
+<div>
+    <h5>Zasady doboru pomp:</h5>
+    <p> <a href="http://ipumps.eu/dobor-pomp-do-ukladu/"> >>Dobór pomp do układu - pomoc </a></p>
+    <p> <a href="http://ipumps.eu/charakterystyka-ukladu-otwartego/"> >>Co to jest geometyczna wysokość podnoszenia Hg </a></p>
+    <p> <a href="http://ipumps.eu/obliczanie-strat-liniowych/"> >>Metody obliczania strat w rurociągach </a></p>
+    <p> <a href="http://ipumps.eu/podstawowa-procedura-doboru-pomp/"> >>Jak działa automatyczny dobór pomp </a></p>
+</div>
+
+<br><br>
+
+<h3>@ViewBag.Message</h3>
+<address>
+    <b>@Model.Producer_Name</b><br>
+    <abbr title="Adres">Adres: @Model.Producer_Adres</abbr><br>
+    <abbr title="Strona internetowa">Strona: @Model.Producer_WWW</abbr><br>
+    <abbr title="Adres mailowy">Mail: @Model.Producer_Mail</abbr><br>
+    <abbr title="Telefon">Tel: @Model.Producer_Tel</abbr><br><br>
+
+    <b>iPDP v. 02.00:</b><br>
+    <abbr title="Producent oprogramowania"><em>SKOWROŃSKI</em></abbr><br>
+    <abbr title="Tel/Kom">Tel/Kom: (71) 34 66 354 / 509 198 196</abbr><br>
+    Kontakt: <a href="mailto:marek@skowronski.com.pl">marek@skowronski.com.pl</a><br />
+</address>

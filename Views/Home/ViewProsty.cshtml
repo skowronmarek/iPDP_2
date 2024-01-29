@@ -1,0 +1,176 @@
+﻿
+@{
+    ViewData["Title"] = "ViewProsty";
+}
+
+@model iPDP.Models.Uniwersalny
+
+<head>
+    <meta charset="utf-8" />
+
+    <script type="text/javascript">
+        function ustawStrone() {
+
+            var Zast_Tmp = document.getElementById("Kl_Zastosowania").value;
+            document.getElementById(Zast_Tmp).checked = true;
+
+            var Interfejs_QwUnit_Tmp = document.getElementById("Interfejs_QwUnit").value;
+            document.getElementById(Interfejs_QwUnit_Tmp).checked = true;
+        };
+
+        function aktualizuj_U2() {
+            daj_Qw();
+            daj_dw();
+            daj_Dh();
+            daj_Hw();
+            daj_Ph();
+        };
+
+    </script>
+    <style>
+        input[type="number"] {
+            width: 100px;
+            background-color: lightgreen;
+            font-size: 20px;
+            font-weight: 600;
+            text-align: right;
+            border-color: #000080;
+        }
+
+        input[type="text"] {
+            /*background-color: rgb(240,240,240);*/
+            background-color: yellow;
+            text-align: right;
+        }
+
+        .ramka {
+            border: 3px solid #000080;
+        }
+    </style>
+
+</head>
+
+<h4 style="text-align:center;">2. Układ pompowy z oszacowaniem strat </h4>
+
+<!--<div style="border: 3px solid rgb(23,162,184);">-->
+<div class="ramka">
+    <fieldset style="margin-left: 10px;">
+        <legend> Zastosowanie </legend>
+
+        <div><input type="radio" id="ogol" name="zastosowanie" value="ogol" onclick="daj_Zast()" checked />  Wszystkie pompy (253)</div>
+        <div><input type="radio" id="scie" name="zastosowanie" value="scie" onclick="daj_Zast()" /> Ścieki (133)</div>
+        <div><input type="radio" id="przem" name="zastosowanie" value="przem" onclick="daj_Zast()" /> Przemysłowe (87) </div>
+        <div><input type="radio" id="sam" name="zastosowanie" value="sam" onclick="daj_Zast()" /> Samozasysające (7)  </div>
+
+        <br>
+
+    </fieldset>
+</div>
+
+<br>
+<div style="display:flex; justify-content: center;">
+    <div style="        width: 600px;
+        border: 1px solid;
+        rgb(23,162,184);
+        position: relative;
+    ">
+        <img src="~/Images/Uniwersalny_2_02.svg" style="width: 100%" />
+        <div style="position:absolute; bottom:64%; left:39% ">
+            <input id="Dis_Qw" type="number" size="6" step="0.1" onchange="aktualizuj_U2()" value=@Model.Interfejs_Qw />  <em><b>Q<sub>w</sub></b></em> - wydajność
+        </div>
+        <div style="position:absolute; bottom:59%; left:53% ">
+
+            <input id="m3h" type="radio" name="Unit" value="m3h" onclick="zmien_QwUnit()" checked /> [m3/h]
+            <input id="L_s" type="radio" name="Unit" value="L_s" onclick="zmien_QwUnit()" /> [L/s]
+            <input id="L_m" type="radio" name="Unit" value="L_m" onclick="zmien_QwUnit()" /> [L/min]
+        </div>
+
+        <div style="position:absolute; bottom:52%; left:39% ">
+            <input id="Dis_d" type="text" size="6" value=@Model.Interfejs_d readonly />  <em>d</em> - średnica wewnętrzna [mm]
+        </div>
+        <div style="position:absolute; bottom:40%; left:39% ">
+            <input id="Dis_L" type="number" step="1" name="Interfejs_L" onchange="aktualizuj_U2()" size="6" value=@Model.Interfejs_L />  <em>L</em> - długość rurociągu [m]
+        </div>
+        <div style="position:absolute; bottom:32%; left:39% ">
+            <input id="Dis_Dh" type="text" size="6" value=@Model.Interfejs_Dh readonly />  <em>Δh</em> - straty [m]
+        </div>
+        <div style="position:absolute; bottom:23%; left:39% ">
+            <input id="Dis_Hg" type="number" step="0.1" onchange="aktualizuj_U2()" size="6" value=@Model.Interfejs_Hg />  <em>H<sub>g</sub></em> - wysokość geometryczna [m]
+        </div>
+        <div style="position:absolute; bottom:13%; left:39% ">
+            <input id="Dis_Hw" type="text" size="6" value=@Model.Interfejs_Hw readonly />  <em> <b>H<sub>w</sub></b></em> - wysokość podnoszenia [m]
+        </div>
+        <div style="position:absolute; bottom:3%; left:39% ">
+            <input id="Dis_Ph" type="text" size="6" value=@Model.Interfejs_Ph readonly />  <em> P<sub>h</sub></em> - moc hydrauliczna [kW]
+        </div>
+
+        <div style="position:absolute; bottom:30%; left:75% "><a href="http://rura61.ipdp.hostingasp.pl" class="btn btn-primary btn-lg"> <em>Δh</em> - ? &raquo;</a></div>
+    </div>
+</div>
+<br>
+@using (Html.BeginForm("ViewProsty", "", FormMethod.Post))
+{
+    <div style="display:flex; justify-content:center">
+        <div hidden="hidden">
+            <input id="Interfejs_Qw" type="number" name="Interfejs_Qw" step="0.0001" value=@Model.Interfejs_Qw /> Qw <br>
+            <input id="Interfejs_d" type="number" name="Interfejs_d" step="0.0001" value=@Model.Interfejs_d /> d <br>
+            <input id="Interfejs_L" type="number" name="Interfejs_L" step="0.0001" value=@Model.Interfejs_L /> L <br>
+            <input id="Interfejs_Dh" type="number" name="Interfejs_Dh" step="0.0001" value=@Model.Interfejs_Dh /> Δh <br>
+            <input id="Interfejs_Ph" type="number" name="Interfejs_Ph" step="0.0001" value=@Model.Interfejs_Ph /> Ph <br>
+            <input id="Interfejs_QwUnit" type="text" name="Interfejs_QwUnit" value=@Model.Interfejs_QwUnit /><br>
+
+            <input id="Qw_model" type="number" name="Qw_Model" step="0.0001" value=@Model.Qw_model /> Ow <br>
+            <input id="Hg_model" type="number" name="Hg_model" step="0.0001" value=@Model.Hg_model /> Hg <br>
+            <input id="Hw_model" type="number" name="Hw_model" step="0.0001" value=@Model.Hw_model /> Hw <br>
+            <input id="Kl_Zastosowania" type="text" name="Kl_Zastosowania" value=@Model.Kl_Zastosowania />
+        </div>
+        <input class="btn btn-primary" type="submit" value=">>________Szukaj pompy________<<" />
+    </div>
+}
+
+<script type="text/javascript">
+    ustawStrone();
+    aktualizuj_U2();
+</script>
+<br>
+<div class="ramka" id="wyniki">
+    <div class="panel-body text-center">
+        <h4>Lista znalezionych pomp</h4>
+        <table id="TabWyniki" class="table table-sm table-striped table-bordered" cellpadding="0">
+            <thead>
+                <tr>
+                    <th>Lp.</th>
+                    <th>Nazwa</th>
+                    <th>Katalog</th>
+                    <th>Qn [m<sup>3</sup>/h]</th>
+                    <th>Hn [m]</th>
+                    <th>Pn [kW]</th>
+                    <th>Zasilanie</th>
+                    <th>Dobroć [-]</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{int i = 0; }
+                @for (int j = 0; j < @Model.LiczbaPomp; j++)
+                {
+                    <tr>
+                        @{i++;}
+                        <td> @i </td>
+                        <td> @Model.doborNaPunkt.listaPompZBazy.fLista[j].Nazwa </td>
+
+                        <td> <a href=@Url.Action("ViewKartaKatalogowa", "", new { tNr = j}) class="btn btn-primary btn-lg"> Karta &raquo;</a> </td>
+
+                        <td> @Model.doborNaPunkt.listaPompZBazy.fLista[j].Qn </td>
+                        <td> @Model.doborNaPunkt.listaPompZBazy.fLista[j].Hn </td>
+                        <td> @Model.doborNaPunkt.listaPompZBazy.fLista[j].Pn </td>
+                        <td> @Model.doborNaPunkt.listaPompZBazy.fLista[j].M_Zas </td>
+                        <td> @Model.doborNaPunkt.listaPompZBazy.fLista[j].Dobroc </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<a href="http://ipumps.eu/dobor-pomp-do-ukladu/" class="btn btn-primary btn-light"> Instrukcja &raquo;</a>

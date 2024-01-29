@@ -1,0 +1,386 @@
+﻿@{
+    ViewBag.Title = "ViewKartaKatalogowa";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model iPDP.Models.Uniwersalny
+
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="~/Content/bootstrap.css" />
+    <title>KartaKatalogowa</title>
+
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
+    <script type="text/javascript">
+        window.onload = function () {
+            var chart = new CanvasJS.Chart("chartContainer",
+                    {
+                        animationEnabled: false,
+                        theme: "theme2",
+                            //title: {
+                            //text: "Charakterystyki pompy i układu"
+                            //},
+                        axisX: {
+                            title: "Q [m3/h]",
+                            lineColor: "#4F81BC",
+                            tickColor: "#4F81BC",
+                            labelFontColor: "#4F81BC",
+                            titleFontColor: "#4F81BC",
+                            gridThickness: 1,
+                            lineThickness: 2,
+                        },
+                        axisY: {
+                            title: "H [m] ",
+                            lineColor: "#4F81BC",
+                            tickColor: "#4F81BC",
+                            labelFontColor: "#4F81BC",
+                            titleFontColor: "#4F81BC",
+                            lineThickness: 2,
+                        },
+                        axisY2: {
+                            title: "P [kW], e[%] ",
+                            lineColor: "#4F81BC",
+                            tickColor: "#4F81BC",
+                            labelFontColor: "#4F81BC",
+                            titleFontColor: "#4F81BC",
+                            lineThickness: 2,
+                        },
+                        data: [
+                            @*
+                            {
+                                type: "line",
+                                showInLegend: true,
+                                name: "Tolerancja",
+                                dataPoints: [
+                                    { x: @Model.doborNaPunkt.QminQn, y: @Model.doborNaPunkt.HminHn},
+                                    { x: @Model.doborNaPunkt.QmaxQn, y: @Model.doborNaPunkt.HminHn},
+                                    { x: @Model.doborNaPunkt.QmaxQn, y: @Model.doborNaPunkt.HmaxHn},
+                                    { x: @Model.doborNaPunkt.QminQn, y: @Model.doborNaPunkt.HmaxHn},
+                                    { x: @Model.doborNaPunkt.QminQn, y: @Model.doborNaPunkt.HminHn}
+                                ]
+                            },
+                                *@
+                            {
+                                type: "spline",
+                                showInLegend: true,
+                                name: "Hu [m]",
+                                markerSize: 0,
+                                dataPoints: @Model.doborNaPunkt.CharUkladu.char_Hu_Str
+                            },
+                            {
+                                type: "spline",
+                                showInLegend: true,
+                                name: "H [m]",
+                                markerSize: 0,
+                                dataPoints: @Model.doborNaPunkt.listaPompZBazy.fLista[Model.NrPompy].char_H_Str
+                            },
+                            {
+                                type: "spline",
+                                showInLegend: true,
+                                name: "P [kW]",
+                                axisYType: "secondary",
+                                markerSize: 0,
+                                dataPoints: @Model.doborNaPunkt.listaPompZBazy.fLista[Model.NrPompy].char_P_Str
+                            },
+                            {
+                                type: "spline",
+                                showInLegend: true,
+                                axisYType: "secondary",
+                                name: "e [%]",
+                                markerSize: 0,
+                                dataPoints: @Model.doborNaPunkt.listaPompZBazy.fLista[Model.NrPompy].char_E_Str
+                            }
+
+                            ,
+                            {
+                                type: "line",
+                                showInLegend: true,
+                                name: "pw",
+                                markerSize: 20,
+                                dataPoints: @Model.doborNaPunkt.CharUkladu.pw_Str
+                            }
+
+                        ],
+                        legend: {
+                            cursor: "pointer",
+                            itemclick: function (e) {
+                                if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+                                    e.dataSeries.visible = false;
+                                } else {
+                                    e.dataSeries.visible = true;
+                                }
+                                chart.render();
+                            }
+                        }
+                    });
+
+            chart.render();
+
+            }
+
+
+    </script>
+
+    <script type="text/javascript">
+
+        function daj_Dane() {
+            document.getElementById("DANE").hidden = false;
+            document.getElementById("PDF").hidden = true;
+            document.getElementById("OPIS").hidden = true;
+            document.getElementById("PUNKTY").hidden = true;
+
+        }
+        function daj_Rysunek() {
+            document.getElementById("DANE").hidden = true;
+            document.getElementById("PDF").hidden = false;
+            document.getElementById("OPIS").hidden = true;
+            document.getElementById("PUNKTY").hidden = true;
+        }
+        function daj_Opis() {
+            document.getElementById("DANE").hidden = true;
+            document.getElementById("PDF").hidden = true;
+            document.getElementById("OPIS").hidden = false;
+            document.getElementById("PUNKTY").hidden = true;
+        }
+        function daj_Punkty() {
+            document.getElementById("DANE").hidden = false;
+            document.getElementById("PDF").hidden = true;
+            document.getElementById("OPIS").hidden = true;
+            document.getElementById("PUNKTY").hidden = false;
+
+        }
+        function daj_Dobor() {
+            document.getElementById("DANE").hidden = false;
+            document.getElementById("PDF").hidden = true;
+            document.getElementById("OPIS").hidden = true;
+            document.getElementById("PUNKTY").hidden = false;
+        }
+
+    </script>
+
+    <script type="text/javascript" src="/assets/script/canvasjs.min.js"></script>
+    <style>
+        input[type="number"] {
+            font-size: 20px;
+            font-weight: 600;
+            text-align: right;
+            border-color: #000080;
+        }
+
+        input[type="text"] {
+            background-color: rgb(240,240,240);
+            text-align: right;
+        }
+
+        .ramka {
+            border: 3px solid #000080;
+        }
+    </style>
+
+</head>
+<div class="ramka" style="padding: 10px;">
+    <div>Producent: @Model.Producer_Name </div>
+    <div>Adres: @Model.Producer_Adres </div>
+    <div>Strona internetowa: @Model.Producer_WWW </div>
+    <div>Mail: @Model.Producer_Mail </div>
+    <div>Tel: @Model.Producer_Tel </div>
+</div>
+    <h4 style="text-align:center;">Karta katalogowa</h4>
+    <div id="zakladki">
+        <a id="Tree" href=@Url.Action("ViewTreeKatalog")>
+            <div style="
+        background-color: #000080;
+        color: white;
+        text-align: center;
+        width: 16%;
+        float: left;
+        border: 3px solid rgb(80,80,80);
+        margin: 2%;">
+                COFNIJ
+            </div>
+        </a>
+        <a id="Dobor" href=@Url.Action("ViewDobor")>
+            <div style="        background-color: #000080;
+        color: white;
+        text-align: center;
+        width: 16%;
+        float: left;
+        border: 3px solid rgb(180, 180, 180);
+        margin: 2%;">
+                COFNIJ
+            </div>
+        </a>
+        <a id="Prosty" href=@Url.Action("ViewProsty")>
+            <div style="        background-color: #000080;
+        color: white;
+        text-align: center;
+        width: 16%;
+        float: left;
+        border: 3px solid rgb(180, 180, 180);
+        margin: 2%;">
+                COFNIJ
+            </div>
+        </a>
+        <div style="        background-color: #000080;
+        color: white;
+        text-align: center;
+        width: 16%;
+        float: left;
+        border: 3px solid rgb(180, 180, 180);
+        margin: 2%;"
+             onclick="daj_Dane()">
+            DANE
+        </div>
+        <div style="        background-color: #000080;
+        color: white;
+        text-align: center;
+        width: 16%;
+        float: left;
+        border: 3px solid rgb(180, 180, 180);
+        margin: 2%;"
+             onclick="daj_Rysunek()">
+            RYSUNEK
+        </div>
+        <div style="        background-color: #000080;
+        color: white;
+        text-align: center;
+        width: 16%;
+        float: left;
+        border: 3px solid rgb(180, 180, 180);
+        margin: 2%;"
+             onclick="daj_Opis()">
+            OPIS
+        </div>
+        <div style="        background-color: #000080;
+        color: white;
+        text-align: center;
+        width: 16%;
+        float: left;
+        border: 3px solid rgb(180, 180, 180);
+        margin: 2%;"
+             onclick="daj_Punkty()">
+            PUNKTY
+        </div>
+
+    </div>
+
+    <div>
+        <div id="PDF" hidden="hidden">
+            <iframe src=@Model.doborNaPunkt.listaPompZBazy.fLista[Model.NrPompy].G_PDF style="width: 100%; height: 1000px;"></iframe>
+        </div>
+        <div id="OPIS" hidden="hidden">
+            <iframe src=@Model.doborNaPunkt.listaPompZBazy.fLista[Model.NrPompy].Opis_PDF style="width: 100%; height: 1000px;"></iframe>
+        </div>
+
+        <div id="DANE" style=" float: unset; ">
+
+            <br>
+
+            <div>
+                <h2 style="text-align:center">@Model.doborNaPunkt.listaPompZBazy.fLista[Model.NrPompy].Nazwa</h2>
+            </div>
+
+            <div id="chartContainer" style="height: 400px; width: 70%; margin: auto"></div>
+            <div style="text-align:center;">Kliknij legendę aby wyłączyć lub włączyć charakterystykę</div>
+
+            <!--<div id="Wymagane" class="row" style="margin: 20px 10px;">-->
+            <div id="Wymagane" class="ramka" style="margin: 20px 10px;">
+                <fieldset>
+                    <legend style="margin-left:5px;">Wymagane parametry pompy   </legend>
+                    <div style="margin-left:15px;">Wydajność [m3/h] = @Model.doborNaPunkt.CharUkladu.Qw </div>
+                    <div style="margin-left:15px;">Wysokość podnoszenia [m] = @Model.doborNaPunkt.CharUkladu.Hw </div>
+                    <div style="margin-left:15px;">Geometryczna Wysokość podnoszenia [m] = @Model.doborNaPunkt.CharUkladu.Hg </div>
+                    <div style="margin-left:15px;">Zastosowanie = @Model.DajZastosowanie() </div>
+                </fieldset>
+            </div>
+            <div class="ramka" style="margin: 20px 10px;">
+                <fieldset>
+                    <legend style="margin-left:5px;">Nominalne parametry pompy  </legend>
+                    <div style="margin-left:15px;">Wydajność [m3/h] = @Model.doborNaPunkt.listaPompZBazy.fLista[Model.NrPompy].Qn </div>
+                    <div style="margin-left:15px;">Wysokość podnoszenia [m] = @Model.doborNaPunkt.listaPompZBazy.fLista[Model.NrPompy].Hn </div>
+                    <div style="margin-left:15px;">Zasilanie = @Model.doborNaPunkt.listaPompZBazy.fLista[Model.NrPompy].M_Zas </div>
+                    <div style="margin-left:15px;">Moc [kW] = @Model.doborNaPunkt.listaPompZBazy.fLista[Model.NrPompy].Pn </div>
+                    <div style="margin-left:15px;">Masa [kg] = @Model.doborNaPunkt.listaPompZBazy.fLista[Model.NrPompy].G_Masa </div>
+                    @*
+                        <div style="margin-left:15px;">Zastosowanie = @Model.doborNaPunkt.listaPompZBazy.fLista[Model.NrPompy].KL_ZAST </div>
+                        <div style="margin-left:15px;">GRUPA = @Model.doborNaPunkt.listaPompZBazy.fLista[Model.NrPompy].GRUPA </div>
+                    *@
+                </fieldset>
+            </div>
+            <div id="Obliczone" class="ramka" style="margin: 20px 10px;">
+                <fieldset>
+                    <legend style="margin-left:5px;">Obliczone parametry pracy przy współpracy z układem</legend>
+                    <div style="margin-left:15px;">Wydajność rzeczywista [m3/h] = @Model.doborNaPunkt.listaPompZBazy.fLista[Model.NrPompy].Qr </div>
+                    <div style="margin-left:15px;">Rzeczywista wysokość podnoszenia [m] = @Model.doborNaPunkt.listaPompZBazy.fLista[Model.NrPompy].Hr </div>
+                    <div style="margin-left:15px;">Moc pobierana z sieci przez pompę [kW] = @Model.doborNaPunkt.listaPompZBazy.fLista[Model.NrPompy].Pr </div>
+                    <div style="margin-left:15px;">Sprawność w punkcie pracy [%] = @Model.doborNaPunkt.listaPompZBazy.fLista[Model.NrPompy].ETAr_proc </div>
+                </fieldset>
+            </div>
+            <div id="PUNKTY" hidden="hidden" class="ramka" style="margin: 20px 10px;">
+                <fieldset>
+                    <legend style="margin-left:5px;">Punkty  </legend>
+                    <table class="table table-sm table-striped table-bordered" cellpadding="0" style="width: 50%;">
+                        <thead>
+                            <tr>
+                                <th>Lp.</th>
+                                <th>Q [m<sup>3</sup>/h]</th>
+                                <th>H [m]</th>
+                                <th>P [kW]</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{int i = 0; }
+                            @for (int j = 0; j < @Model.doborNaPunkt.listaPompZBazy.fLista[Model.NrPompy].CharPompy.n_pt; j++)
+                            {
+                                <tr>
+                                    @{i++;}
+                                    <td> @i </td>
+                                    <td> @Model.doborNaPunkt.listaPompZBazy.fLista[Model.NrPompy].CharPompy.TabQ[i] </td>
+                                    <td> @Model.doborNaPunkt.listaPompZBazy.fLista[Model.NrPompy].CharPompy.TabH[i] </td>
+                                    <td> @Model.doborNaPunkt.listaPompZBazy.fLista[Model.NrPompy].CharPompy.TabP[i] </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </fieldset>
+
+
+            </div>
+        </div>
+        <script>
+         if (@ViewBag.Filter == true) {
+             document.getElementById("Wymagane").hidden = true;
+             document.getElementById("Obliczone").hidden = true;
+         }
+         else
+         {
+             document.getElementById("Wymagane").hidden = false;
+             document.getElementById("Obliczone").hidden = false;
+         }
+
+         if (@ViewBag.Kafelek == Tree) {
+             document.getElementById("Tree").hidden = false;
+             document.getElementById("Dobor").hidden = true;
+             document.getElementById("Prosty").hidden = true;
+         }
+         else
+         {
+             if (@ViewBag.Kafelek == Dobor) {
+                 document.getElementById("Tree").hidden = true;
+                 document.getElementById("Dobor").hidden = false;
+                 document.getElementById("Prosty").hidden = true;
+             }
+             else
+             {
+                 document.getElementById("Tree").hidden = true;
+                 document.getElementById("Dobor").hidden = true;
+                 document.getElementById("Prosty").hidden = false;
+             }
+         }
+
+
+        </script>
+
+    </div>
+
