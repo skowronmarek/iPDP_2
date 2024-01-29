@@ -21,7 +21,13 @@
 		<Mail></Mail>
 	</BIALOGON>
 	<LFP>
-		<Nazwa>Leszczyńska Fabryka Pomp</Nazwa>
+		<Nazwa>LFP Sp. z o.o.</Nazwa>
+		<Nazwa_Skr>LFP</Nazwa_Skr>
+		<Adres>ul. Fabryczna 15, 64-100 Leszno</Adres>
+		<Logo>LogoLFP.01.JPG</Logo>
+		<WWW>https://www.lfp.com.pl</WWW>
+		<Mail>info@lfp.com.pl</Mail>
+		<Tel>(+48) 65 52 88 600</Tel>
 	</LFP>
 	<Software>
 		<Nazwa>SKOWROŃSKI Marek Skowroński</Nazwa>
