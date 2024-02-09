@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using iPDP.Models;
 
-namespace iPDP.Controllers
+namespace iPDP_Mepro.Controllers
 {
     public class HomeController : Controller
     {
@@ -17,10 +17,7 @@ namespace iPDP.Controllers
         public ActionResult Index()
         {
             // Ustawienia otwarcia
-            ViewBag.Producer_Skr = ZadUniwersalny.Producer_Skr;
-            ViewBag.Producer_Mail = ZadUniwersalny.Producer_Mail;
-            if (ZadUniwersalny != null)
-            {
+            if (ZadUniwersalny != null) {
                 ZadUniwersalny = null;
                 ZadUniwersalny = new Uniwersalny();
             }
@@ -31,18 +28,14 @@ namespace iPDP.Controllers
         // ZERO kafelek
         public ActionResult ViewTreeKatalog()
         {
-            ViewBag.Producer_Skr = ZadUniwersalny.Producer_Skr;
-            ViewBag.Producer_Mail = ZadUniwersalny.Producer_Mail;
-
-
             DrzewoPomp drzewo = new DrzewoPomp();  // przygotowanie drzewa
             ViewBag.Json = drzewo.DajDrzewo();     // przygotowanie drzewa
             ZadUniwersalny.doborNaPunkt.Kafelek = "Tree";
             return View(ZadUniwersalny);
         }
-
+        
         [HttpPost]
-        public ActionResult ViewTreeKatalog(string Sciezka)
+        public ActionResult ViewTreeKatalog( string Sciezka)
         {
             DrzewoPomp drzewo = new DrzewoPomp();  // przygotowanie drzewa
             ViewBag.Json = drzewo.DajDrzewo();     // przygotowanie drzewa
@@ -58,11 +51,11 @@ namespace iPDP.Controllers
         public ActionResult ViewDobor()
         {
             // Ustawienia otwarcia
-            ZadUniwersalny.doborNaPunkt.Kafelek = "Dobor";
+           ZadUniwersalny.doborNaPunkt.Kafelek = "Dobor";
 
             return View(ZadUniwersalny);
         }
-
+        
         // pierwszy kafelek
         [HttpPost]
         public ActionResult ViewDobor(string Qw_model, string Hw_model, string Kl_Zastosowania,
@@ -76,7 +69,7 @@ namespace iPDP.Controllers
             ZadUniwersalny.Interfejs_Qw = Double.Parse(interfejs_Qw);    // Qw w jednostkach interfejsu do przekazania
             ZadUniwersalny.Interfejs_QwUnit = Interfejs_QwUnit;          // Jednostki interfejsu np. "m3/h"
             ZadUniwersalny.Interfejs_Hw = Double.Parse(Hw_model);        // Hw - wymagana
-
+            
             // 2. Ustawianie modelu (tylko jeden poziom)
             ZadUniwersalny.Qw_model = Double.Parse(Qw_model);       // Qw_model
             ZadUniwersalny.Hw_model = Double.Parse(Hw_model);
@@ -85,8 +78,8 @@ namespace iPDP.Controllers
             // 3. Przekazane do obliczen w DOBORU NA PUNKT
             ZadUniwersalny.doborNaPunkt.CharUkladu.Qw = Double.Parse(Qw_model);       // Qw_model
             ZadUniwersalny.doborNaPunkt.CharUkladu.Hw = Double.Parse(Hw_model);       // Hw modelu
-                                                                                      // Nie ma Hg, przyjęto Hg = Hw/2
-            ZadUniwersalny.doborNaPunkt.CharUkladu.Hg = ZadUniwersalny.doborNaPunkt.CharUkladu.Hw / 2;       // Hg modelu
+                // Nie ma Hg, przyjęto Hg = Hw/2
+            ZadUniwersalny.doborNaPunkt.CharUkladu.Hg = ZadUniwersalny.doborNaPunkt.CharUkladu.Hw/2;       // Hg modelu
             ZadUniwersalny.doborNaPunkt.Kl_Zastosown = Kl_Zastosowania;
             // 4. Ustawienie wyswietlania KartyKatalogowej 
             ZadUniwersalny.doborNaPunkt.Kafelek = "Dobor";                          // ustawianie kafalka do powrotu  
@@ -120,7 +113,7 @@ namespace iPDP.Controllers
             ZadUniwersalny.Interfejs_Hg = Double.Parse(Hg_model);        // Hg - wysokosc geometryczna [m]
             ZadUniwersalny.Interfejs_Hw = Double.Parse(Hw_model);        // Hw - wymagana
             ZadUniwersalny.Interfejs_Ph = Double.Parse(Interfejs_Ph);    // Ph - moc hydrauliczna
-
+            
             // 2. Ustawianie modelu (html @model przyjmuje tylko jeden poziom)
             ZadUniwersalny.Qw_model = Double.Parse(Qw_model);       // Qw_model
             ZadUniwersalny.Hw_model = Double.Parse(Hw_model);
@@ -165,7 +158,7 @@ namespace iPDP.Controllers
             ZadUniwersalny.doborNaPunkt.CharUkladu.Qw = Double.Parse(U_Qw);
             ZadUniwersalny.doborNaPunkt.CharUkladu.Hw = Double.Parse(U_Hw);
             ZadUniwersalny.doborNaPunkt.CharUkladu.Hg = Double.Parse(U_Hg);
-
+            
             ZadUniwersalny.Interfejs_Qw = ZadUniwersalny.doborNaPunkt.CharUkladu.Qw;
             ZadUniwersalny.Interfejs_Hw = ZadUniwersalny.doborNaPunkt.CharUkladu.Hw;
             ZadUniwersalny.Interfejs_Hg = ZadUniwersalny.doborNaPunkt.CharUkladu.Hg;
@@ -210,34 +203,39 @@ namespace iPDP.Controllers
         }
 
         public ActionResult ViewKartaKatalogowa(int tNr)
-        {
+        {            
             ZadUniwersalny.NrPompy = tNr;
-            ZadUniwersalny.doborNaPunkt.CharUkladu.Qmax = ZadUniwersalny.doborNaPunkt.listaPompZBazy.fLista[ZadUniwersalny.NrPompy].CharPompy.H_Qmax;
+            //ZadUniwersalny.doborNaPunkt.CharUkladu.Qmax = ZadUniwersalny.doborNaPunkt.listaPompZBazy.fLista[ZadUniwersalny.NrPompy].Qr;
+                                                                         
+            //ZadUniwersalny.doborNaPunkt.CharUkladu.Aktualizuj();
 
             ViewBag.Kafelek = ZadUniwersalny.doborNaPunkt.Kafelek;
             if (ZadUniwersalny.doborNaPunkt.Filtruj)
             {
                 ViewBag.Filter = "true";
             }
-            else
+            else 
             {
                 ViewBag.Filter = "false";
             }
-
+            
             return View(ZadUniwersalny);
         }
 
+       
+        
         public ActionResult About()
         {
-            return View(ZadUniwersalny);
+            
+            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-
+        } 
+        
         private readonly ILogger<HomeController> _logger;
 
         public HomeController(ILogger<HomeController> logger)

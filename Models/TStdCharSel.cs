@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 using System.Web;
 using System.Runtime.Serialization;
 //using System.EnterpriseServices;
-
 
 namespace iPDP.Models
 {
@@ -22,7 +22,7 @@ namespace iPDP.Models
         public double QmaxTol { get; set; } = 1.5;
         public double HminTol { get; set; } = 0.5;
         public double HmaxTol { get; set; } = 1.5;
-        public string Qw_Str { get; set; } = "";
+        public string Qw_Str { get; set; } ="";
         public string Hw_Str { get; set; } = "";
         public string char_Hu_Str { get; set; } = "";
         public string pw_Str { get; set; } = "";     // punkt wymagany
@@ -33,7 +33,7 @@ namespace iPDP.Models
 
         public string[] TabQwStr; // dane do wykresu
         public string[] TabHwStr;
-
+            
 
 
 
@@ -72,10 +72,13 @@ namespace iPDP.Models
 
         public void Aktualizuj()              // Przelicza standardowa charakterystyke ukladu    
         {
+            
+            
             char_Hu_Str = "[";
             //TabQw[0] = Math.Round(Qmax / 10 * 0, 2);
             //TabQw[0] = Math.Round(Qw * 1.5 / 10 * 0, 2);
             TabQw[0] = Math.Round(Qw * 1.3 / 10 * 0, 2);
+            //TabQw[0] = Math.Round(Qmax * 1.3 / 10 * 0, 2);
             TabQwStr[0] = Convert.ToString(TabQw[0]);
 
             TabHw[0] = Math.Round(Hg + R * Math.Pow(TabQw[0], 2), 2);
@@ -90,16 +93,16 @@ namespace iPDP.Models
                 //TabQw[i] = Math.Round(Qmax / 10 * i, 2);
                 TabQw[i] = Math.Round(Qw * 1.3 / 10 * i, 2);
                 TabQwStr[i] = Convert.ToString(TabQw[i]);
-
-                TabHw[i] = Math.Round(Hg + R * Math.Pow(TabQw[i], 2), 2);
+                
+                TabHw[i] = Math.Round( Hg + R * Math.Pow(TabQw[i], 2) , 2);
                 TabHwStr[i] = Convert.ToString(TabHw[i]);
 
                 char_Hu_Str = char_Hu_Str + ",{ x: " + Convert.ToString(TabQw[i]) + ", y:" + Convert.ToString(TabHw[i]) + "}";
             }
             char_Hu_Str = char_Hu_Str + "]";
 
-            pw_Str = "[{ x:" + Convert.ToString(Qw) + ",y:" + Convert.ToString(Hw) + "}]";
-
+            pw_Str = "[{ x:" + Convert.ToString(Qw)+",y:" + Convert.ToString(Hw) + "}]";
+                       
         }
 
     }

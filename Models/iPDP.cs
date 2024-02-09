@@ -3,9 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml;
+using Newtonsoft.Json;
+
+
 
 namespace iPDP.Models
 {
+    public class Tzast
+        {
+            public string Skr { get; set; }
+            public string Opis { get; set; }
+            //public int LiPomp { get; set; }
+        }
     public class IPDP
     {
         public string Producer_ID = "XXX";
@@ -16,9 +25,15 @@ namespace iPDP.Models
         public string Producer_WWW = "XXX";
         public string Producer_Mail = "XXX";
         public string Producer_Tel = "XXX";
+        public string Producer_DBpath = "XXX";
+        public string Producer_RysPre = "XXX";
+        public string Producer_OpisPre = "XXX";
 
+        public IList<Tzast> ListaZast = new List<Tzast>();
+        
         public XmlDocument Xml_iPDP = new XmlDocument();
         public XmlNode myNode;
+        public XmlNode zasNode;  // do czytania zastosowań
         public IPDP() // constructor
         {
             Xml_iPDP.Load("wwwroot/iPDP.xml");
@@ -37,7 +52,28 @@ namespace iPDP.Models
             myNode = Xml_iPDP.SelectSingleNode("IPDP_CONFIG").SelectSingleNode(Producer_ID).SelectSingleNode("Mail");
             Producer_Mail = myNode.InnerText;
             myNode = Xml_iPDP.SelectSingleNode("IPDP_CONFIG").SelectSingleNode(Producer_ID).SelectSingleNode("Tel");
-            Producer_Tel = myNode.InnerText;            
+            Producer_Tel = myNode.InnerText;
+            myNode = Xml_iPDP.SelectSingleNode("IPDP_CONFIG").SelectSingleNode(Producer_ID).SelectSingleNode("DBpath");
+            Producer_DBpath = myNode.InnerText;
+            myNode = Xml_iPDP.SelectSingleNode("IPDP_CONFIG").SelectSingleNode(Producer_ID).SelectSingleNode("Opisy");
+            Producer_OpisPre = myNode.InnerText;
+            myNode = Xml_iPDP.SelectSingleNode("IPDP_CONFIG").SelectSingleNode(Producer_ID).SelectSingleNode("Rysunki");
+            Producer_RysPre  = myNode.InnerText;
+
+            myNode = Xml_iPDP.SelectSingleNode("IPDP_CONFIG").SelectSingleNode(Producer_ID).SelectSingleNode("Zastosowania");
+            if (myNode.HasChildNodes) 
+                {
+                    foreach (XmlNode odczNode in myNode.ChildNodes) 
+                    {
+                        Tzast Zastosowanie = new Tzast();
+                        zasNode = odczNode.SelectSingleNode("skr");
+                        Zastosowanie.Skr = zasNode.InnerText;
+                        zasNode = odczNode.SelectSingleNode("opis");
+                        Zastosowanie.Opis = zasNode.InnerText;
+                        ListaZast.Add(Zastosowanie);                
+                    }
+                    
+                }
         }
 
     }

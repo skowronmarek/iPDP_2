@@ -7,8 +7,9 @@ using System.Data.SqlClient;
 
 namespace iPDP.Models
 {
-    public class DrzewoPomp
+    public class DrzewoPomp : IPDP
     {
+        //public string Producent;
         public class Identyfilator
         {
             public string ID1 { get; set; }
@@ -43,15 +44,46 @@ namespace iPDP.Models
             Czytaj_A();
 
         }
-
         public void Czytaj_A()
         {
             PolaczDoVebio = new SqlConnection(Ustawienia.sciezkaDoVebio);
             PolaczDoVebio.Open();
 
             Pola = "NAZWA,ID1,ID2,ID3";
-            //commandText = $"SELECT {Pola} FROM {Ustawienia.TabeleTypyLFP}";
-            commandText = $"SELECT {Pola} FROM {Ustawienia.tabela_MEP_A}";
+
+            switch (Producer_Skr) 
+            {
+                case "LFP":
+                    {
+                       commandText = $"SELECT {Pola} FROM {Ustawienia.tabela_LFP_A}";
+                    };
+                    break;
+                case "KFP":
+                    {
+                        commandText = $"SELECT {Pola} FROM {Ustawienia.tabela_KFP_A}";
+                    };
+                    break;
+                case "MET":
+                    {
+                        commandText = $"SELECT {Pola} FROM {Ustawienia.tabela_MET_A}";
+                    };
+                    break;
+
+                case "Meprozet":
+                    {
+                        commandText = $"SELECT {Pola} FROM {Ustawienia.tabela_MEP_A}";
+                    };
+                    break;
+                case "DAMBAT":
+                    {
+                        commandText = $"SELECT {Pola} FROM {Ustawienia.tabela_DAM_A}";
+                    };
+                    break;
+                default:
+                    //Statement
+                    break;
+            }
+            //commandText = $"SELECT {Pola} FROM {Ustawienia.tabela_MEP_A}";
 
             SqlCommand sqlCommand = new SqlCommand(commandText, PolaczDoVebio);
             reader = sqlCommand.ExecuteReader();

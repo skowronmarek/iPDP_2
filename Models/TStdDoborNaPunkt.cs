@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Data.SqlClient;
 
-
 namespace iPDP.Models
 {
     //---------------------------------------------//
@@ -13,6 +12,13 @@ namespace iPDP.Models
     //---------------------------------------------//
     public class TStdDoborNaPunkt
     {
+        // PARAMETRY WYSZUKIWANIA przekazywane z StdZadSzuk !!! do poprawy
+        public string ProdDBpath; // granice dla Qn
+        public string Producent;
+        public string ProdRysPref;
+        public string ProdOpiPref;
+
+
         public string QminQn; // granice dla Qn
         public string QmaxQn;
         public string HminHn; // granice dla Hn
@@ -21,7 +27,7 @@ namespace iPDP.Models
         // PARAMETRY WYSZUKIWANIA W BAZIE - ustawiane z zewnatrz
         public Boolean Filtruj = false;
         public string Kafelek = "Tree";
-        public string Producent;
+        
         public string Kl_Zastosown;
         public string Kl_Zasilania = "'3~400V 50Hz'";
         public string Ds_min_STR = "'160'";
@@ -171,11 +177,13 @@ namespace iPDP.Models
             //tmpPompa.M_LFaz = Convert.ToInt32(reader["FAZY"]);
             //tmpPompa.M_FREK = Convert.ToInt32(reader["FREK"]);
             // Parametry geometryczne
-            tmpPompa.G_PDF = "/PDF/" + Convert.ToString(reader["G_PDF"]);
+            //tmpPompa.G_PDF = "/PDF/" + Convert.ToString(reader["G_PDF"]);
+            tmpPompa.G_PDF = "/"+ProdRysPref+"/" + Convert.ToString(reader["G_PDF"]);
             tmpPompa.G_Masa = Convert.ToDouble(reader["MASA"]);
 
             // Parametry TYPU
-            tmpPompa.Opis_PDF = "/OPIS/" + Convert.ToString(reader["OPIS_PDF"]);
+            //tmpPompa.Opis_PDF = "/OPIS/" + Convert.ToString(reader["OPIS_PDF"]);
+            tmpPompa.Opis_PDF = "/" + ProdOpiPref + "/" + Convert.ToString(reader["OPIS_PDF"]);
             tmpPompa.KL_ZAST = Convert.ToString(reader["KL_ZAST"]);
             tmpPompa.GRUPA = Convert.ToString(reader["GRUPA"]);
 
@@ -251,17 +259,64 @@ namespace iPDP.Models
             HmaxHn = Convert.ToString(CharUkladu.Hw * CharUkladu.HmaxTol);
             Ds_min_STR = Convert.ToString(Ds);
 
-            PolaczDoVebio = new SqlConnection(Ustawienia.sciezkaDoVebio);
+            //PolaczDoVebio = new SqlConnection(Ustawienia.sciezkaDoVebio);
+            PolaczDoVebio = new SqlConnection(ProdDBpath);
+
             PolaczDoVebio.Open();
 
-            Producent = "MEPRO";
+            //Producent = "MEPRO";
 
             switch (Producent)
             {
                 case "LFP":
-                    //Statement
+                    {
+                        Tabele = Ustawienia.tabele_LFP;
+                        Relacje = Ustawienia.relacje_LFP;
+                        //Pola = Ustawienia.pola_DAM; czytamy wszystko
+
+                        Filtr_Tolerancja_Qn = $"{Ustawienia.tabela_LFP_A} .[Qn] > {QminQn} AND {Ustawienia.tabela_LFP_A} .[Qn] < {QmaxQn} AND {Ustawienia.tabela_LFP_A} .[Hn] > {HminHn} AND {Ustawienia.tabela_LFP_A} .[Hn] < {HmaxHn} ";
+                        Filtr_Srednica = $"{Ustawienia.tabela_LFP_G} .[PARN1] < { Ds_min_STR} ";
+
+                        if (Kl_Zastosown == "ogol")
+                        {
+                            Filtr_Zastosowanie = "1=1";
+                        }
+                        else
+                        {
+                            Kl_Zastosown = "'%/" + Kl_Zastosown + "/%'";
+                            Filtr_Zastosowanie = $"{Ustawienia.tabela_LFP_T} .[KL_ZAST] LIKE {Kl_Zastosown} ";
+                            //Filtr_Zastosowanie = $"{Ustawienia.tabela_MEP_T} .[KL_ZAST] LIKE '%przem%' ";
+                        }
+                        //Kl_Zastosown = "'%/pscie/%'";
+                        //Kl_Zasilania = "'1~230'";
+                        Filtr_Zasilanie = $"{Ustawienia.tabela_LFP_M} .[M_TYP] = {Kl_Zasilania} ";
+
+                        Filtr_ID1 = $"{Ustawienia.tabela_LFP_A} .[ID1] = {ID1}";
+                        Filtr_ID2 = $"{Ustawienia.tabela_LFP_A} .[ID2] = {ID2}";
+                        Filtr_ID3 = $"{Ustawienia.tabela_LFP_A} .[ID3] = {ID3}";
+
+                        if (Filtruj)
+                        {
+                            switch (L_ID)
+                            {
+                                case 0:
+                                    Filtry = $"{Filtr_ID1}";
+                                    break;
+                                case 1:
+                                    Filtry = $"{Filtr_ID1} AND {Filtr_ID2}";
+                                    break;
+                                case 2:
+                                    Filtry = $"{Filtr_ID1} AND {Filtr_ID2} AND {Filtr_ID3}";
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            Filtry = $"{Filtr_Tolerancja_Qn} AND {Filtr_Zastosowanie} ";
+                        }
+                    };
                     break;
-                case "MEPRO":
+                case "Meprozet":
                     {
                         Tabele = Ustawienia.tabele_MEP;
                         Relacje = Ustawienia.relacje_MEP;
@@ -309,8 +364,152 @@ namespace iPDP.Models
                         }
                     };
                     break;
-                case "DAM":
-                    //Statement
+
+                case "KFP":
+                    {
+                        Tabele = Ustawienia.tabele_KFP;
+                        Relacje = Ustawienia.relacje_KFP;
+                        //Pola = Ustawienia.pola_DAM; czytamy wszystko
+
+                        Filtr_Tolerancja_Qn = $"{Ustawienia.tabela_KFP_A} .[Qn] > {QminQn} AND {Ustawienia.tabela_KFP_A} .[Qn] < {QmaxQn} AND {Ustawienia.tabela_KFP_A} .[Hn] > {HminHn} AND {Ustawienia.tabela_KFP_A} .[Hn] < {HmaxHn} ";
+                        
+                        if (Kl_Zastosown == "ogol")
+                        {
+                            Filtr_Zastosowanie = "1=1";
+                        }
+                        else
+                        {
+                            Kl_Zastosown = "'%/" + Kl_Zastosown + "/%'";
+                            Filtr_Zastosowanie = $"{Ustawienia.tabela_KFP_T} .[KL_ZAST] LIKE {Kl_Zastosown} ";
+                            //Filtr_Zastosowanie = $"{Ustawienia.tabela_MEP_T} .[KL_ZAST] LIKE '%przem%' ";
+                        }
+                        //Kl_Zastosown = "'%/pscie/%'";
+                        //Kl_Zasilania = "'1~230'";
+                        Filtr_Zasilanie = $"{Ustawienia.tabela_KFP_M} .[M_TYP] = {Kl_Zasilania} ";
+
+                        Filtr_ID1 = $"{Ustawienia.tabela_KFP_A} .[ID1] = {ID1}";
+                        Filtr_ID2 = $"{Ustawienia.tabela_KFP_A} .[ID2] = {ID2}";
+                        Filtr_ID3 = $"{Ustawienia.tabela_KFP_A} .[ID3] = {ID3}";
+
+                        if (Filtruj)
+                        {
+                            switch (L_ID)
+                            {
+                                case 0:
+                                    Filtry = $"{Filtr_ID1}";
+                                    break;
+                                case 1:
+                                    Filtry = $"{Filtr_ID1} AND {Filtr_ID2}";
+                                    break;
+                                case 2:
+                                    Filtry = $"{Filtr_ID1} AND {Filtr_ID2} AND {Filtr_ID3}";
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            Filtry = $"{Filtr_Tolerancja_Qn} AND {Filtr_Zastosowanie} ";
+                        }
+                    };
+                    break;
+
+                case "MET":
+                    {
+                        Tabele = Ustawienia.tabele_MET;
+                        Relacje = Ustawienia.relacje_MET;
+                        //Pola = Ustawienia.pola_DAM; czytamy wszystko
+
+                        Filtr_Tolerancja_Qn = $"{Ustawienia.tabela_MET_A} .[Qn] > {QminQn} AND {Ustawienia.tabela_MET_A} .[Qn] < {QmaxQn} AND {Ustawienia.tabela_MET_A} .[Hn] > {HminHn} AND {Ustawienia.tabela_MET_A} .[Hn] < {HmaxHn} ";
+
+                        if (Kl_Zastosown == "ogol")
+                        {
+                            Filtr_Zastosowanie = "1=1";
+                        }
+                        else
+                        {
+                            Kl_Zastosown = "'%/" + Kl_Zastosown + "/%'";
+                            Filtr_Zastosowanie = $"{Ustawienia.tabela_MET_T} .[KL_ZAST] LIKE {Kl_Zastosown} ";
+                            //Filtr_Zastosowanie = $"{Ustawienia.tabela_MEP_T} .[KL_ZAST] LIKE '%przem%' ";
+                        }
+                        //Kl_Zastosown = "'%/pscie/%'";
+                        //Kl_Zasilania = "'1~230'";
+                        Filtr_Zasilanie = $"{Ustawienia.tabela_MET_M} .[M_TYP] = {Kl_Zasilania} ";
+
+                        Filtr_ID1 = $"{Ustawienia.tabela_MET_A} .[ID1] = {ID1}";
+                        Filtr_ID2 = $"{Ustawienia.tabela_MET_A} .[ID2] = {ID2}";
+                        Filtr_ID3 = $"{Ustawienia.tabela_MET_A} .[ID3] = {ID3}";
+
+                        if (Filtruj)
+                        {
+                            switch (L_ID)
+                            {
+                                case 0:
+                                    Filtry = $"{Filtr_ID1}";
+                                    break;
+                                case 1:
+                                    Filtry = $"{Filtr_ID1} AND {Filtr_ID2}";
+                                    break;
+                                case 2:
+                                    Filtry = $"{Filtr_ID1} AND {Filtr_ID2} AND {Filtr_ID3}";
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            Filtry = $"{Filtr_Tolerancja_Qn} AND {Filtr_Zastosowanie} ";
+                        }
+                    };
+                    break;
+
+
+
+                case "DAMBAT":
+                    { 
+                        Tabele = Ustawienia.tabele_DAM;
+                        Relacje = Ustawienia.relacje_DAM;
+                        
+                        Filtr_Tolerancja_Qn = $"{Ustawienia.tabela_DAM_A} .[Qn] > {QminQn} AND {Ustawienia.tabela_DAM_A} .[Qn] < {QmaxQn} AND {Ustawienia.tabela_DAM_A} .[Hn] > {HminHn} AND {Ustawienia.tabela_DAM_A} .[Hn] < {HmaxHn} ";
+                        //Filtr_Srednica = $"{Ustawienia.tabela_MEP_G} .[PARN1] < { Ds_min_STR} ";
+
+                        if (Kl_Zastosown == "ogol")
+                        {
+                            Filtr_Zastosowanie = "1=1";
+                        }
+                        else
+                        {
+                            Kl_Zastosown = "'%/" + Kl_Zastosown + "/%'";
+                            Filtr_Zastosowanie = $"{Ustawienia.tabela_DAM_T} .[KL_ZAST] LIKE {Kl_Zastosown} ";
+                            //Filtr_Zastosowanie = $"{Ustawienia.tabela_MEP_T} .[KL_ZAST] LIKE '%przem%' ";
+                        }
+                        //Kl_Zastosown = "'%/pscie/%'";
+                        //Kl_Zasilania = "'1~230'";
+                        Filtr_Zasilanie = $"{Ustawienia.tabela_DAM_M} .[M_TYP] = {Kl_Zasilania} ";
+
+                        Filtr_ID1 = $"{Ustawienia.tabela_DAM_A} .[ID1] = {ID1}";
+                        Filtr_ID2 = $"{Ustawienia.tabela_DAM_A} .[ID2] = {ID2}";
+                        Filtr_ID3 = $"{Ustawienia.tabela_DAM_A} .[ID3] = {ID3}";
+
+                        if (Filtruj)
+                        {
+                            switch (L_ID)
+                            {
+                                case 0:
+                                    Filtry = $"{Filtr_ID1}";
+                                    break;
+                                case 1:
+                                    Filtry = $"{Filtr_ID1} AND {Filtr_ID2}";
+                                    break;
+                                case 2:
+                                    Filtry = $"{Filtr_ID1} AND {Filtr_ID2} AND {Filtr_ID3}";
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            Filtry = $"{Filtr_Tolerancja_Qn} AND {Filtr_Zastosowanie} ";
+                            //Filtry = $"{Filtr_Tolerancja_Qn}";
+                        }
+                    };
                     break;
                 default:
                     //Statement

@@ -9,14 +9,19 @@
     <meta charset="utf-8" />
 
     <script type="text/javascript">
-        function ustawStrone() {
 
-            var Zast_Tmp = document.getElementById("Kl_Zastosowania").value;
-            document.getElementById(Zast_Tmp).checked = true;
-
-            var Interfejs_QwUnit_Tmp = document.getElementById("Interfejs_QwUnit").value;
-            document.getElementById(Interfejs_QwUnit_Tmp).checked = true;
-        };
+         var ListaZas_js = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.ListaZast));
+ 
+        window.onload = function () {
+            daj_Radio(ListaZas_js);
+            ustawStrone();
+        }
+        /*
+        function aktualizuj() {
+            document.getElementById("Hw_model").value = document.getElementById("Dis_Hw").value;
+        }   
+         */
+                      
 
         function aktualizuj_U2() {
             daj_Qw();
@@ -56,14 +61,8 @@
 <div class="ramka">
     <fieldset style="margin-left: 10px;">
         <legend> Zastosowanie </legend>
-
-        <div><input type="radio" id="ogol" name="zastosowanie" value="ogol" onclick="daj_Zast()" checked />  Wszystkie pompy (253)</div>
-        <div><input type="radio" id="scie" name="zastosowanie" value="scie" onclick="daj_Zast()" /> Ścieki (133)</div>
-        <div><input type="radio" id="przem" name="zastosowanie" value="przem" onclick="daj_Zast()" /> Przemysłowe (87) </div>
-        <div><input type="radio" id="sam" name="zastosowanie" value="sam" onclick="daj_Zast()" /> Samozasysające (7)  </div>
-
-        <br>
-
+      
+        <div id="radioButtonsContainer"></div>
     </fieldset>
 </div>
 
@@ -129,7 +128,6 @@
 }
 
 <script type="text/javascript">
-    ustawStrone();
     aktualizuj_U2();
 </script>
 <br>

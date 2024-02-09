@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <IPDP_CONFIG>
 	<!--<PRODUCER>BIALOGON</PRODUCER>-->
-	<PRODUCER>MEPROZET</PRODUCER>
+	<!--<PRODUCER>MEPROZET</PRODUCER>-->
 	<!--<PRODUCER>LFP</PRODUCER>-->
-	<!--<PRODUCER>METALCHEM</PRODUCER>-->
+	<PRODUCER>METALCHEM</PRODUCER>
 	<!--<PRODUCER>DAMBAT</PRODUCER>-->
 	<MEPROZET>
 		<Nazwa>Brzeska Fabryka Pomp i Armatury MEPROZET Sp. z o.o.</Nazwa>
@@ -13,13 +13,80 @@
 		<WWW>https://meprozet.com.pl</WWW>
 		<Mail>meprozet@meprozet.com.pl</Mail>
 		<Tel>(+48) 77 400 40 00</Tel>
+		<DBpath>Server=mssql.webio.pl,2401;Database=skowron1_ipdp_dev;User Id=skowron1_ipdp_dev;Password=6N.tmdP#S!`QS`F.|,Uh</DBpath>
+		<Opisy>OPIS</Opisy>
+		<Rysunki>PDF</Rysunki>
+		<Zastosowania>
+			<Zas>
+				<skr>ogol</skr>
+				<opis>Wszystkie pompy (253)</opis>
+			</Zas>	
+			<Zas>
+				<skr>scie</skr>
+				<opis>Ścieki (133)</opis>
+			</Zas>
+			<Zas>
+				<skr>przem</skr>
+				<opis>Przemysłowe (87)</opis>
+			</Zas>
+			<Zas>
+				<skr>sam</skr>
+				<opis>Samozasysające (7)</opis>
+			</Zas>		
+		</Zastosowania>
 	</MEPROZET>
 	<BIALOGON>
 		<Nazwa>Kielecka Fabryka Pomp BIAŁOGON</Nazwa>
-		<Nazwa_Skr>Białogon</Nazwa_Skr>
-		<Strona>https://www.kfp-bialogon.com.pl</Strona>
-		<Mail></Mail>
+		<Nazwa_Skr>KFP</Nazwa_Skr>
+		<Adres>ul. Armii Krajowej 40, 49-304 BRZEG</Adres>
+		<Logo>LogoKFP.01.JPG</Logo>
+		<WWW>https://www.kfp-bialogon.com.pl</WWW>
+		<Mail>bialogon@kfp-bialogon.com.pl</Mail>
+		<Tel>(+48) 41 366 82 02</Tel>
+		<DBpath>Server=mssql.webio.pl,2401;Database=skowron1_ipdp_dev;User Id=skowron1_ipdp_dev;Password=6N.tmdP#S!`QS`F.|,Uh</DBpath>
+		<Opisy>KFP_OPIS</Opisy>
+		<Rysunki>KFP_RYS</Rysunki>
+		<Zastosowania>
+			<Zas>
+				<skr>ogol</skr>
+				<opis>Wszystkie pompy (253)</opis>
+			</Zas>	
+			<Zas>
+				<skr>scie</skr>
+				<opis>Ścieki (133)</opis>
+			</Zas>
+			<Zas>
+				<skr>przem</skr>
+				<opis>Przemysłowe (87)</opis>
+			</Zas>
+		</Zastosowania>
 	</BIALOGON>
+	<METALCHEM>
+		<Nazwa>METALCHEM-WARSZAWA SA</Nazwa>
+		<Nazwa_Skr>MET</Nazwa_Skr>
+		<Adres>ul. Studzienna 7a, 01-259 Warszawa</Adres>
+		<Logo>LogoMET.01.JPG</Logo>
+		<WWW>www.metalchemsa.com.pl</WWW>
+		<Mail>metalchem@metalchemsa.pl </Mail>
+		<Tel>+48 22 836 89 50</Tel>
+		<DBpath>Server=mssql.webio.pl,2401;Database=skowron1_ipdp_dev;User Id=skowron1_ipdp_dev;Password=6N.tmdP#S!`QS`F.|,Uh</DBpath>
+		<Opisy>MET_OPIS</Opisy>
+		<Rysunki>MET_RYS</Rysunki>
+		<Zastosowania>
+			<Zas>
+				<skr>ogol</skr>
+				<opis>Wszystkie pompy (253)</opis>
+			</Zas>	
+			<Zas>
+				<skr>scie</skr>
+				<opis>Ścieki (133)</opis>
+			</Zas>
+			<Zas>
+				<skr>przem</skr>
+				<opis>Przemysłowe (87)</opis>
+			</Zas>
+		</Zastosowania>
+	</METALCHEM>
 	<LFP>
 		<Nazwa>LFP Sp. z o.o.</Nazwa>
 		<Nazwa_Skr>LFP</Nazwa_Skr>
@@ -28,7 +95,50 @@
 		<WWW>https://www.lfp.com.pl</WWW>
 		<Mail>info@lfp.com.pl</Mail>
 		<Tel>(+48) 65 52 88 600</Tel>
+		<DBpath>Server=mssql.webio.pl,2401;Database=skowron1_ipdp_dev;User Id=skowron1_ipdp_dev;Password=6N.tmdP#S!`QS`F.|,Uh</DBpath>		
+		<Opisy>LFP_OPIS</Opisy>
+		<Rysunki>LFP_RYS</Rysunki>
+		<Zastosowania>
+			<Zas>
+				<skr>ogol</skr>
+				<opis>Wszystkie pompy (?)</opis>
+			</Zas>	
+			<Zas>
+				<skr>woda</skr>
+				<opis>Pompy do wody (?)</opis>
+			</Zas>
+		</Zastosowania>
 	</LFP>
+	<DAMBAT>
+		<Nazwa>DAMBAT Jastrzębski S.K.A.</Nazwa>
+		<Nazwa_Skr>DAMBAT</Nazwa_Skr>
+		<Adres>ul. Adamów 50, 05-825 Grodzisk Mazowiecki</Adres>
+		<Logo>LogoDAM.01.JPG</Logo>
+		<WWW>https://www.dambat.pl/</WWW>
+		<Mail>biuro@dambat.pl</Mail>
+		<Tel>(+48) 22 721 11 92</Tel>
+		<DBpath>Server=mssql.webio.pl,2401;Database=skowron1_ipdp_dev;User Id=skowron1_ipdp_dev;Password=6N.tmdP#S!`QS`F.|,Uh</DBpath>
+		<Opisy>DAM_OPIS</Opisy>
+		<Rysunki>DAM_RYS</Rysunki>
+		<Zastosowania>
+			<Zas>
+				<skr>ogol</skr>
+				<opis>Wszystkie pompy</opis>
+			</Zas>		
+			<Zas>
+				<skr>gle</skr>
+				<opis>Do studni głębinowych</opis>
+			</Zas>
+			<Zas>
+				<skr>przem</skr>
+				<opis>Przemysłowe</opis>
+			</Zas>
+			<Zas>
+				<skr>scie</skr>
+				<opis>Ścieki</opis>
+			</Zas>
+		</Zastosowania>
+	</DAMBAT>
 	<Software>
 		<Nazwa>SKOWROŃSKI Marek Skowroński</Nazwa>
 		<Nazwa_Skr><em>SKOWROŃSKI</em></Nazwa_Skr>

@@ -1,4 +1,4 @@
-﻿@model iPDP.Models.Uniwersalny
+﻿@model iPDP.Models.Uniwersalny;
 
 @{
     ViewData["Title"] = "ViewDobor";
@@ -8,18 +8,18 @@
     <meta charset="utf-8" />
 
     <script type="text/javascript">
-        function ustawStrone() {
 
-            var Zast_Tmp = document.getElementById("Kl_Zastosowania").value;
-            document.getElementById(Zast_Tmp).checked = true;
+        var ListaZas_js = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.ListaZast));
 
-            var Interfejs_QwUnit_Tmp = document.getElementById("Interfejs_QwUnit").value;
-            document.getElementById(Interfejs_QwUnit_Tmp).checked = true;
+        window.onload = function () {
+            daj_Radio(ListaZas_js);
+            ustawStrone();
         }
 
         function aktualizuj() {
             document.getElementById("Hw_model").value = document.getElementById("Dis_Hw").value;
         }
+
     </script>
     <style>
         input[type="number"] {
@@ -44,20 +44,12 @@
 
 <h4 style="text-align:center;">1. Dobór pomp</h4>
 
-
-<!--<div style="border: 3px solid rgb(23,162,184);" onload="ustawStrone();">-->
-
 <div class="ramka">
     <!--<div class="row" style="border: 3px solid rgb(23,162,184);">   row odsuwa ramke wyrzucilem   -->
     <fieldset style="margin-left: 10px;">
         <legend> Zastosowanie </legend>
 
-        <div><input type="radio" id="ogol" name="zastosowanie" value="ogol" onclick="daj_Zast()" checked />  Wszystkie pompy (253)</div>
-        <div><input type="radio" id="scie" name="zastosowanie" value="scie" onclick="daj_Zast()" /> Ścieki (133)</div>
-        <div><input type="radio" id="przem" name="zastosowanie" value="przem" onclick="daj_Zast()" /> Przemysłowe (87) </div>
-        <div><input type="radio" id="sam" name="zastosowanie" value="sam" onclick="daj_Zast()" /> Samozasysające (7)  </div>
-
-        <br>
+        <div id="radioButtonsContainer"></div>
 
     </fieldset>
 </div>
@@ -78,6 +70,7 @@
     </p>
 
 </div>
+
 <br>
 @using (Html.BeginForm("ViewDobor", "", FormMethod.Post))
 {
@@ -93,10 +86,8 @@
     <div style="display:flex; justify-content:center"><input class="btn btn-primary" type="submit" value=">>________Szukaj pompy________<<" /></div>
 }
 <br>
-<script type="text/javascript">
-        ustawStrone();
-</script>
-<div id="wyniki" class="ramka" ondblclick="daj_Karte()">
+
+<div class="ramka" id="wyniki">
     <div class="panel-body text-center">
         <h4>Lista znalezionych pomp</h4>
         <table id="TabWyniki" class="table table-sm table-striped table-bordered" cellpadding="0">
@@ -127,12 +118,14 @@
                         <td> @Model.doborNaPunkt.listaPompZBazy.fLista[j].Hn </td>
                         <td> @Model.doborNaPunkt.listaPompZBazy.fLista[j].Pn </td>
                         <td> @Model.doborNaPunkt.listaPompZBazy.fLista[j].M_Zas </td>
+
                         <!--<td> @Model.doborNaPunkt.listaPompZBazy.fLista[j].Dobroc </td>-->
                     </tr>
+
                 }
             </tbody>
         </table>
     </div>
-    
 </div>
 <a href="http://ipumps.eu/dobor-pomp-do-ukladu/" class="btn btn-primary btn-light"> Instrukcja &raquo;</a>
+

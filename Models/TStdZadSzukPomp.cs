@@ -10,10 +10,10 @@ using System.Data.SqlClient;
 
 namespace iPDP.Models
 {
- 
-    public class TStdZadSzukPomp: IPDP
+
+    public class TStdZadSzukPomp : IPDP
     {
- 
+
         public TStdDoborNaPunkt doborNaPunkt = new TStdDoborNaPunkt();
 
         public string Kl_Zastosowania { get; set; } = "ogol";
@@ -122,5 +122,12 @@ namespace iPDP.Models
             return Zast;
         }
 
+        public TStdZadSzukPomp() // constructor
+        {
+            doborNaPunkt.ProdDBpath = Producer_DBpath;
+            doborNaPunkt.Producent = Producer_Skr;
+            doborNaPunkt.ProdOpiPref = Producer_OpisPre;  //prefix
+            doborNaPunkt.ProdRysPref = Producer_RysPre;
+        }
     }
 }

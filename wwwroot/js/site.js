@@ -3,6 +3,41 @@
 
 // Write your JavaScript code.
 
+function ustawStrone() {
+
+    var Zast_Tmp = document.getElementById("Kl_Zastosowania").value;
+    document.getElementById(Zast_Tmp).checked = true;
+
+    var Interfejs_QwUnit_Tmp = document.getElementById("Interfejs_QwUnit").value;
+    document.getElementById(Interfejs_QwUnit_Tmp).checked = true;
+};
+
+function daj_Radio(ListaZas) {
+    var radioButtonsContainer = document.getElementById('radioButtonsContainer');
+    //ListaZas.forEach(function (item) {
+    ListaZas.forEach(function (item)
+        {
+            var Opis = "_" + item.Opis;
+            var Skr = item.Skr.toString(); // Ensure it's a string for ID and other attributes
+
+            var radioButton = document.createElement('input');
+            radioButton.type = 'radio';
+            radioButton.id = Skr;
+            radioButton.name = 'zastosowanie';
+            radioButton.value = Skr;
+            radioButton.onclick = function () { daj_Zast(); };
+
+            var label = document.createElement('label');
+            label.htmlFor = Skr;
+            label.appendChild(document.createTextNode(Opis));
+            radioButtonsContainer.appendChild(radioButton);
+            radioButtonsContainer.appendChild(label);
+            radioButtonsContainer.appendChild(document.createElement('br'));
+        }
+    );
+}
+
+
 function daj_Zast() {
     var zast = document.querySelector("input[name='zastosowanie']:checked").value;
     document.getElementById("Kl_Zastosowania").value = zast;   // na stronie

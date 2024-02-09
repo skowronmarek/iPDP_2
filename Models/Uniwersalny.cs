@@ -34,6 +34,7 @@ namespace iPDP.Models
 
         public Uniwersalny() // constructor
         {
+                       
             //Dobor();
             Kl_Zastosowania = "ogol";
             Kl_Zasilania = "'3x400'";

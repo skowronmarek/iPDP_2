@@ -9,4 +9,14 @@
     <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\DAM_OPIS\" />
+    <Folder Include="wwwroot\DAM_RYS\" />
+    <Folder Include="wwwroot\LFP_OPIS\" />
+    <Folder Include="wwwroot\LFP_RYS\" />
+    <Folder Include="wwwroot\KFP_RYS\" />
+    <Folder Include="wwwroot\MET_RYS\" />
+    <Folder Include="wwwroot\MET_OPIS\" />
+  </ItemGroup>
+
 </Project>
